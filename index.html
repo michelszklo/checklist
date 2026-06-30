@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Diagnóstico de Prontidão para Monitoramento e Avaliação · FGV CLEAR</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;1,9..144,300&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy:    #01354A;
+  --navy2:   #012030;
+  --blue:    #0074A3;
+  --blue-l:  #08B0EE;
+  --green:   #98C43B;
+  --green-d: #5C821A;
+  --teal:    #4FAC91;
+  --bg:      #F2F5F4;
+  --bg-card: #FFFFFF;
+  --text:    #0D1E26;
+  --text-m:  #4A6070;
+  --text-l:  #7A94A0;
+  --border:  #D4E2E8;
+  --border-s:#BAD0DA;
+  --disp:    #5C821A;
+  --disp-bg: #EDF5D8;
+  --cons:    #B07000;
+  --cons-bg: #FDF2D8;
+  --aus:     #A82020;
+  --aus-bg:  #FAEAEA;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:15px;line-height:1.6;}
+
+/* HEADER */
+header{background:var(--navy);position:relative;overflow:hidden;}
+header::after{content:'';position:absolute;bottom:-100px;right:-80px;width:340px;height:340px;border-radius:50%;border:1px solid rgba(8,176,238,0.1);pointer-events:none;}
+header::before{content:'';position:absolute;top:-50px;left:35%;width:220px;height:220px;border-radius:50%;border:1px solid rgba(152,196,59,0.09);pointer-events:none;}
+.header-inner{max-width:960px;margin:0 auto;padding:2rem 1.5rem 0;position:relative;z-index:1;}
+.logo-row{display:flex;align-items:center;gap:16px;margin-bottom:1.8rem;}
+.logo-img{height:36px;width:auto;display:block;}
+.header-body{padding-bottom:2rem;}
+.header-tag{font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--blue-l);margin-bottom:0.7rem;font-weight:400;}
+header h1{font-family:'Fraunces',serif;font-size:clamp(1.5rem,3.2vw,2.3rem);font-weight:300;line-height:1.18;color:#fff;margin-bottom:0.85rem;}
+header h1 em{font-style:italic;color:var(--blue-l);}
+.header-desc{font-size:13.5px;color:rgba(255,255,255,0.48);max-width:600px;line-height:1.7;font-weight:300;}
+
+/* TABS */
+.tabs-bar{background:var(--navy2);border-top:1px solid rgba(255,255,255,0.06);position:sticky;top:0;z-index:200;}
+.tabs-inner{max-width:960px;margin:0 auto;padding:0 1.5rem;display:flex;}
+.tab-btn{font-family:'DM Sans',sans-serif;font-size:13px;font-weight:400;color:rgba(255,255,255,0.4);background:transparent;border:none;border-bottom:2px solid transparent;padding:13px 20px 11px;cursor:pointer;transition:all 0.2s;white-space:nowrap;}
+.tab-btn:hover{color:rgba(255,255,255,0.72);}
+.tab-btn.active{color:var(--blue-l);border-bottom-color:var(--blue-l);font-weight:500;}
+.progress-wrap{height:2px;background:rgba(255,255,255,0.08);}
+.progress-fill{height:100%;background:var(--green);transition:width 0.4s ease;width:0%;}
+
+/* LAYOUT */
+.layout{max-width:960px;margin:0 auto;padding:2.5rem 1.5rem 5rem;}
+.tab-panel{display:none;}
+.tab-panel.active{display:block;}
+
+/* IDENTIFICATION FORM */
+.id-form{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:1.5rem;margin-bottom:2rem;}
+.id-form-title{font-size:12px;font-weight:500;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-l);margin-bottom:1.2rem;}
+.id-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.id-grid.full{grid-template-columns:1fr;}
+.id-field{display:flex;flex-direction:column;gap:5px;}
+.id-field label{font-size:12px;font-weight:500;color:var(--text-m);}
+.id-field input{font-family:'DM Sans',sans-serif;font-size:13.5px;padding:8px 12px;border:1px solid var(--border-s);border-radius:6px;background:var(--bg);color:var(--text);outline:none;transition:border-color 0.15s;}
+.id-field input:focus{border-color:var(--blue);background:#fff;}
+.id-field input::placeholder{color:var(--text-l);}
+
+/* CHECKLIST */
+.checklist-intro{background:var(--bg-card);border:1px solid var(--border);border-left:3px solid var(--blue-l);border-radius:6px;padding:1rem 1.25rem;margin-bottom:2.5rem;font-size:13px;color:var(--text-m);line-height:1.6;}
+.checklist-intro strong{color:var(--text);font-weight:500;}
+
+.bloco{margin-bottom:2.5rem;}
+.bloco-header{display:flex;align-items:baseline;gap:14px;margin-bottom:1.2rem;padding-bottom:0.75rem;border-bottom:1px solid var(--border);}
+.bloco-num{font-family:'Fraunces',serif;font-size:2.1rem;font-weight:300;color:var(--border-s);line-height:1;flex-shrink:0;min-width:38px;}
+.bloco-title{font-size:12px;font-weight:500;text-transform:uppercase;letter-spacing:0.09em;color:var(--navy);}
+.bloco-subtitle{font-size:12px;color:var(--text-l);margin-top:2px;}
+
+.question{background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:1rem 1.2rem;margin-bottom:8px;transition:border-color 0.2s;}
+.question.answered{border-color:#A8C8B8;}
+.q-top{display:flex;gap:10px;align-items:flex-start;margin-bottom:10px;}
+.q-id{font-size:10px;font-weight:500;color:var(--blue);background:#EAF4FA;border:1px solid #C0DCE8;border-radius:4px;padding:2px 7px;flex-shrink:0;margin-top:2px;letter-spacing:0.03em;}
+.q-text{font-size:13.5px;color:var(--text);line-height:1.55;}
+.q-options{display:flex;gap:6px;flex-wrap:wrap;}
+.opt{font-size:12px;padding:5px 16px;border-radius:20px;border:1px solid var(--border-s);background:var(--bg);color:var(--text-m);cursor:pointer;transition:all 0.15s;font-family:'DM Sans',sans-serif;}
+.opt:hover{border-color:var(--navy);color:var(--navy);}
+.opt.sel-disp{background:var(--disp-bg);color:var(--disp);border-color:var(--disp);font-weight:500;}
+.opt.sel-cons{background:var(--cons-bg);color:var(--cons);border-color:var(--cons);font-weight:500;}
+.opt.sel-aus{background:var(--aus-bg);color:var(--aus);border-color:var(--aus);font-weight:500;}
+
+/* RESULTS */
+.results-section{margin-top:3rem;padding-top:2.5rem;border-top:2px solid var(--border);}
+.results-header{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:8px;margin-bottom:0.5rem;}
+.results-title{font-family:'Fraunces',serif;font-size:1.5rem;font-weight:300;}
+.answered-count{font-size:12px;color:var(--text-l);}
+.results-desc{font-size:13px;color:var(--text-m);margin-bottom:1.5rem;line-height:1.6;max-width:680px;}
+
+.bloco-summary-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:2rem;}
+.bloco-summary-card{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:1.2rem;}
+.bsc-title{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-l);margin-bottom:12px;}
+.bsc-bars{display:flex;flex-direction:column;gap:7px;}
+.bsc-bar-row{display:flex;align-items:center;gap:8px;}
+.bsc-bar-label{font-size:11px;color:var(--text-m);width:90px;flex-shrink:0;}
+.bsc-bar-bg{flex:1;height:6px;background:var(--border);border-radius:3px;overflow:hidden;}
+.bsc-bar-fill{height:100%;border-radius:3px;transition:width 0.5s ease;}
+.bsc-bar-count{font-size:11px;color:var(--text-l);width:20px;text-align:right;flex-shrink:0;}
+.fill-disp{background:var(--disp);}
+.fill-cons{background:var(--cons);}
+.fill-aus{background:var(--aus);}
+
+.gap-section{margin-top:2rem;}
+.gap-bloco{margin-bottom:2rem;}
+.gap-bloco-title{font-size:12px;font-weight:500;text-transform:uppercase;letter-spacing:0.08em;color:var(--navy);margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid var(--border);}
+.gap-item{background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:1rem 1.2rem;margin-bottom:8px;border-left:3px solid var(--border);}
+.gap-item.disp{border-left-color:var(--disp);}
+.gap-item.cons{border-left-color:var(--cons);}
+.gap-item.aus{border-left-color:var(--aus);}
+.gap-item-top{display:flex;align-items:flex-start;gap:10px;margin-bottom:6px;}
+.gap-status{font-size:10px;font-weight:500;padding:2px 9px;border-radius:20px;flex-shrink:0;white-space:nowrap;}
+.status-disp{background:var(--disp-bg);color:var(--disp);border:1px solid #B8D890;}
+.status-cons{background:var(--cons-bg);color:var(--cons);border:1px solid #DFC070;}
+.status-aus{background:var(--aus-bg);color:var(--aus);border:1px solid #DCA0A0;}
+.gap-q-text{font-size:13px;color:var(--text);line-height:1.5;}
+.gap-orientacao{font-size:12.5px;color:var(--text-m);line-height:1.55;padding-top:8px;border-top:1px solid var(--border);margin-top:6px;font-style:italic;}
+.gap-orientacao::before{content:'→ ';color:var(--blue);font-style:normal;font-weight:500;}
+
+.actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:1.5rem;}
+.btn-reset{font-size:13px;padding:8px 20px;border-radius:6px;border:1px solid var(--border-s);background:transparent;color:var(--text-m);cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.15s;}
+.btn-reset:hover{border-color:var(--navy);color:var(--navy);}
+.btn-pdf{font-size:13px;padding:8px 22px;border-radius:6px;border:none;background:var(--navy);color:#fff;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.15s;}
+.btn-pdf:hover{background:var(--blue);}
+
+.pdf-instruction{background:#EAF4FA;border:1px solid #C0DCE8;border-radius:6px;padding:0.9rem 1.1rem;font-size:12.5px;color:var(--blue);line-height:1.6;margin-top:12px;}
+.pdf-instruction strong{font-weight:500;}
+
+/* FOOTER */
+footer{background:var(--navy2);padding:1.4rem;}
+.footer-inner{max-width:960px;margin:0 auto;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;}
+.footer-logo{height:22px;width:auto;opacity:0.5;}
+.footer-text{font-size:11px;color:rgba(255,255,255,0.28);}
+
+/* PRINT / PDF */
+@media print {
+  header,footer,.tabs-bar,.actions,.checklist-intro,.pdf-instruction,
+  .tab-panel:not(.active){display:none!important;}
+  body{background:#fff;font-size:12px;}
+  .layout{padding:0;max-width:100%;}
+  .tab-panel.active{display:block!important;}
+  .results-section{border-top:none;padding-top:0;margin-top:0;}
+
+  .print-header{display:block!important;}
+  .bloco-summary-grid{grid-template-columns:repeat(4,1fr);}
+  .gap-item{break-inside:avoid;}
+  .gap-bloco{break-inside:avoid;}
+}
+.print-header{display:none;}
+
+@media(max-width:600px){
+  .id-grid{grid-template-columns:1fr;}
+  .q-options{flex-wrap:wrap;}
+  .bloco-summary-grid{grid-template-columns:1fr 1fr;}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="logo-row">
+      <img class="logo-img" src="https://fgvclear.org/website/wp-content/themes/fgvclear-theme/img/clear-logo-branco.svg" alt="FGV CLEAR" onerror="this.style.display='none'"/>
+    </div>
+    <div class="header-body">
+      <div class="header-tag">Instrumento de apoio à gestão de políticas educacionais</div>
+      <h1>Diagnóstico de prontidão para<br><em>monitoramento e avaliação</em></h1>
+      <p class="header-desc">Responda às perguntas sobre a política que você deseja monitorar e avaliar. O instrumento mapeará as lacunas de informação e documentação, orientando os próximos passos.</p>
+    </div>
+  </div>
+</header>
+
+<div class="tabs-bar">
+  <div class="tabs-inner">
+    <button class="tab-btn active" onclick="switchTab('checklist',this)">Diagnóstico</button>
+    <button class="tab-btn" onclick="switchTab('resultado',this)">Mapa de Lacunas</button>
+  </div>
+  <div class="progress-wrap">
+    <div class="progress-fill" id="progress-fill"></div>
+  </div>
+</div>
+
+<div class="layout">
+
+  <!-- ── ABA 1: DIAGNÓSTICO ── -->
+  <div class="tab-panel active" id="panel-checklist">
+
+    <div class="id-form">
+      <div class="id-form-title">Identificação</div>
+      <div class="id-grid">
+        <div class="id-field">
+          <label>Nome da política</label>
+          <input type="text" id="f-politica" placeholder="Ex: Programa de Formação Continuada de Professores"/>
+        </div>
+        <div class="id-field">
+          <label>Setor</label>
+          <input type="text" id="f-secretaria" placeholder="Ex: Gerência de Formação Docente"/>
+        </div>
+        <div class="id-field">
+          <label>Data</label>
+          <input type="text" id="f-data" placeholder="DD/MM/AAAA"/>
+        </div>
+      </div>
+    </div>
+
+    <div class="checklist-intro" style="border-left-color:var(--teal);background:#EEF7F4;">
+      <strong>Versão piloto.</strong> Este instrumento está em fase de testes. Dúvidas, sugestões ou dificuldades no preenchimento podem ser enviadas para <a href="mailto:michel.szklo@fgv.br" style="color:var(--blue);font-weight:500;">michel.szklo@fgv.br</a>.
+    </div>
+
+    <div class="checklist-intro">
+      <strong>Como usar:</strong> Para cada item, selecione <strong>Sim</strong> (a condição está plenamente atendida), <strong>Em parte</strong> (existe parcialmente ou está em desenvolvimento) ou <strong>Não</strong> (a condição ainda não existe). Ao final, acesse a aba <strong>Mapa de Lacunas</strong> para ver o resultado.
+    </div>
+
+    <div id="questions-area"></div>
+
+    <div class="actions">
+      <button class="btn-pdf" onclick="switchTab('resultado', document.querySelectorAll('.tab-btn')[1])">Ver mapa de lacunas →</button>
+      <button class="btn-reset" onclick="resetAll()">↺ Reiniciar</button>
+    </div>
+
+  </div>
+
+  <!-- ── ABA 2: RESULTADO ── -->
+  <div class="tab-panel" id="panel-resultado">
+
+    <!-- Print header (only visible in PDF) -->
+    <div class="print-header">
+      <h2 style="font-family:'Fraunces',serif;font-size:1.8rem;font-weight:300;color:var(--navy);margin-bottom:0.6rem;">Diagnóstico de Prontidão para Monitoramento e Avaliação</h2>
+      <div id="print-id" style="font-size:15px;color:var(--text-m);margin-bottom:1.5rem;line-height:1.9;"></div>
+      <hr style="border:none;border-top:1px solid var(--border);margin-bottom:1.5rem;">
+    </div>
+
+    <div class="results-header">
+      <div class="results-title">Mapa de Lacunas</div>
+      <div class="answered-count" id="answered-count">0 de 26 perguntas respondidas</div>
+    </div>
+    <p class="results-desc">O painel abaixo mostra o percentual de itens disponíveis, em construção e não disponíveis em cada bloco, seguido do detalhamento com orientações para cada lacuna identificada.</p>
+
+    <div class="actions" style="margin-bottom:1.5rem;">
+      <button class="btn-pdf" onclick="gerarPDF()">↓ Gerar PDF</button>
+    </div>
+    <div class="pdf-instruction" id="pdf-instruction-top" style="display:none;margin-bottom:1.5rem;">
+      <strong>Como salvar como PDF:</strong> Uma janela de impressão será aberta. Em "Destino" ou "Impressora", selecione <strong>"Salvar como PDF"</strong> e clique em <strong>Salvar</strong>. Para melhor resultado, use orientação <strong>retrato</strong> e margens <strong>normais</strong>.
+    </div>
+
+    <div class="bloco-summary-grid" id="summary-grid"></div>
+
+    <div class="gap-section" id="gap-section"></div>
+
+    <div class="actions">
+      <button class="btn-pdf" onclick="gerarPDF()">↓ Gerar PDF</button>
+      <button class="btn-reset" onclick="resetAll()">↺ Reiniciar diagnóstico</button>
+    </div>
+    <div class="pdf-instruction" id="pdf-instruction" style="display:none;">
+      <strong>Como salvar como PDF:</strong> Uma janela de impressão será aberta. Em "Destino" ou "Impressora", selecione <strong>"Salvar como PDF"</strong> e clique em <strong>Salvar</strong>. Para melhor resultado, use orientação <strong>retrato</strong> e margens <strong>normais</strong>.
+    </div>
+
+  </div>
+
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <img class="footer-logo" src="https://fgvclear.org/website/wp-content/themes/fgvclear-theme/img/clear-logo-branco.svg" alt="FGV CLEAR" onerror="this.style.display='none'"/>
+    <span class="footer-text">FGV CLEAR · 2026</span>
+  </div>
+</footer>
+
+<script>
+const blocos = [
+  {
+    id: 'B1', num: '01',
+    title: 'Sobre o problema público',
+    subtitle: 'O que sabemos sobre o problema educacional que a política busca resolver?',
+    questions: [
+      { id: '1.1', text: 'Existe um documento que descreve o problema educacional que a política busca resolver?',
+        orientacao: 'O diagnóstico do problema é o ponto de partida de qualquer processo de M&A. Sem uma descrição clara do problema, fica difícil definir o que a política pretende mudar e, consequentemente, o que monitorar e avaliar. É o insumo central para a construção da árvore do problema e da Teoria da Mudança.' },
+      { id: '1.2', text: 'Há dados que mostram a magnitude do problema (ex: taxas de reprovação, abandono, desempenho)?',
+        orientacao: 'Dados sobre a magnitude do problema permitem entender a dimensão do desafio e são essenciais para definir metas realistas e mensurar o avanço gerado pela política ao longo do tempo.' },
+      { id: '1.3', text: 'Esses dados permitem comparar a situação entre escolas, municípios ou grupos de estudantes?',
+        orientacao: 'A capacidade de comparação é fundamental para identificar onde o problema é mais grave e para quem a política deve priorizar seus esforços. Também é um insumo importante para avaliações que buscam comparar grupos ou territórios.' },
+      { id: '1.4', text: 'Há informações sobre as causas do problema — por que ele existe?',
+        orientacao: 'Compreender as causas do problema é o núcleo da árvore do problema e da Teoria da Mudança. Sem esse entendimento, a política pode estar agindo sobre os sintomas e não sobre as raízes do problema, ou deixando de priorizar as causas mais críticas que, se resolvidas, gerariam maior impacto.' },
+      { id: '1.5', text: 'Existem dados históricos que mostram como o problema evoluiu ao longo do tempo?',
+        orientacao: 'Séries históricas são essenciais para construir a linha de base da política, referência sem a qual não é possível mensurar se houve avanço. Também ajudam a contextualizar se o problema está se agravando ou melhorando independentemente da intervenção.' },
+    ]
+  },
+  {
+    id: 'B2', num: '02',
+    title: 'Sobre a política',
+    subtitle: 'O que está documentado sobre como a política funciona e por que ela deveria dar certo?',
+    questions: [
+      { id: '2.1', text: 'Os objetivos da política estão definidos e documentados formalmente?',
+        orientacao: 'Objetivos claros e formalizados são a base de qualquer ferramenta de M&A. Sem eles, não é possível definir o que monitorar nem avaliar se a política está no caminho certo.' },
+      { id: '2.2', text: 'Esses objetivos estão expressos em termos de mudanças esperadas para os estudantes ou para a rede de ensino?',
+        orientacao: 'Objetivos expressos em termos de mudanças concretas facilitam a definição de indicadores de resultado e são o ponto de chegada da Teoria da Mudança, conectando o que a política faz com o que ela pretende transformar.' },
+      { id: '2.3', text: 'Existe um documento que descreve o que a política faz — suas ações e entregas previstas?',
+        orientacao: 'A descrição das ações e entregas é o insumo central para o monitoramento da execução. Sem saber o que foi planejado, não é possível verificar se a política está sendo implementada como previsto.' },
+      { id: '2.4', text: 'Há uma descrição de quem são os beneficiários da política e como são selecionados?',
+        orientacao: 'A definição clara do público-alvo é essencial para o monitoramento da cobertura da política e para qualquer avaliação que busque verificar se os recursos estão chegando a quem deveriam chegar.' },
+      { id: '2.5', text: 'Existe algum registro que explique a lógica entre as ações da política e o problema que ela quer resolver (ex: "se os professores forem capacitados, vão ensinar melhor, e os alunos vão aprender mais")?',
+        orientacao: 'Esse registro é o que conecta o que a política faz ao problema que ela quer resolver. É esse tipo de raciocínio, simples mas explícito, que orienta o que faz sentido monitorar e avaliar depois.' },
+      { id: '2.6', text: 'Estão documentadas as condições externas que precisam estar presentes para a política dar certo, coisas que a equipe não controla diretamente, mas das quais a política depende (ex: participação das famílias, internet nas escolas, apoio dos diretores)?',
+        orientacao: 'Toda política depende de fatores que estão fora do controle de quem a executa. Saber quais são esses fatores ajuda a entender, mais à frente, por que os resultados aconteceram ou não.' },
+      { id: '2.7', text: 'Há registro dos principais riscos que podem impedir a política de dar certo (ex: atraso na entrega de materiais, rotatividade de professores, baixa adesão das escolas)?',
+        orientacao: 'Mapear riscos com antecedência ajuda a equipe a agir antes que eles comprometam os resultados, em vez de descobri-los só quando o problema já aconteceu.' },
+    ]
+  },
+  {
+    id: 'B3', num: '03',
+    title: 'Sobre dados e acompanhamento',
+    subtitle: 'O que está disponível para acompanhar se a política está sendo executada e gerando resultados?',
+    questions: [
+      { id: '3.1', text: 'Existem indicadores definidos para acompanhar a execução da política (ex: número de escolas atendidas, professores formados)?',
+        orientacao: 'Indicadores de execução são o instrumento básico do monitoramento. Sem eles, não é possível saber se a política está sendo implementada na escala e na qualidade previstas.' },
+      { id: '3.2', text: 'Existem indicadores definidos para acompanhar os resultados esperados (ex: taxas de aprendizagem, frequência, conclusão)?',
+        orientacao: 'Indicadores de resultado permitem verificar se as mudanças previstas estão ocorrendo. São o elo entre o que a política entrega e o que ela pretende transformar, e são essenciais para qualquer avaliação.' },
+      { id: '3.3', text: 'Há valores de referência que mostram a situação antes da política começar (linha de base)?',
+        orientacao: 'A linha de base é o ponto zero do monitoramento. Sem ela, não é possível afirmar se houve avanço, e qualquer melhora observada fica sem referência para ser interpretada.' },
+      { id: '3.4', text: 'Existem metas estabelecidas — valores que a política pretende alcançar em determinado prazo?',
+        orientacao: 'As metas transformam os objetivos em compromissos mensuráveis. Sem metas, o monitoramento perde sua função orientadora, e não há como saber se o desempenho observado é suficiente ou não.' },
+      { id: '3.5', text: 'Está definido quem é responsável por coletar e reportar cada indicador?',
+        orientacao: 'A definição de responsabilidades é condição para que o monitoramento funcione na prática. Indicadores sem responsável tendem a não ser coletados com regularidade, comprometendo todo o sistema de acompanhamento.' },
+      { id: '3.6', text: 'Os dados dos beneficiários permitem identificá-los individualmente (ex: por nome, CPF ou código de aluno)?',
+        orientacao: 'A identificação individual dos beneficiários é fundamental para análises mais aprofundadas, como verificar a cobertura da política, acompanhar trajetórias individuais e realizar avaliações que comparam grupos. Atenção: dados pessoais devem ser tratados conforme a LGPD, com acesso restrito e finalidade clara de uso.' },
+      { id: '3.7', text: 'Os dados estão organizados de forma que permitam análises (em sistemas ou planilhas, não apenas em papel)?',
+        orientacao: 'Dados organizados em formatos estruturados são o pré-requisito para qualquer análise. Informações dispersas ou apenas em papel dificultam o uso dos dados para tomada de decisão e inviabilizam avaliações mais robustas.' },
+      { id: '3.8', text: 'Os dados são coletados com regularidade e estão atualizados?',
+        orientacao: 'A regularidade da coleta determina a utilidade do monitoramento. Dados desatualizados perdem capacidade de orientar decisões no tempo certo e comprometem a qualidade das avaliações.' },
+      { id: '3.9', text: 'Existe algum relatório ou painel que consolide e apresente esses dados periodicamente?',
+        orientacao: 'A consolidação periódica dos dados é o que transforma informação em insumo para decisão. Sem um espaço de síntese, os dados existem mas não são usados, e o monitoramento perde sua função de aprendizado e correção de rota.' },
+    ]
+  },
+  {
+    id: 'B4', num: '04',
+    title: 'Sobre a equipe',
+    subtitle: 'Como a equipe trabalha com informações e evidências no dia a dia?',
+    questions: [
+      { id: '4.1', text: 'A equipe tem momentos regulares para analisar dados e discutir o andamento da política?',
+        orientacao: 'Momentos estruturados de análise são o que transforma o monitoramento em prática de gestão. Sem eles, os dados podem existir mas não chegam a orientar decisões, e o acompanhamento fica fragmentado e reativo.' },
+      { id: '4.2', text: 'Os resultados do monitoramento são comunicados regularmente à liderança?',
+        orientacao: 'O fluxo de informação entre a equipe técnica e a liderança é essencial para que os resultados do monitoramento se traduzam em decisões. Sem esse canal, o M&A corre o risco de existir apenas no nível operacional, sem influenciar as escolhas estratégicas da gestão.' },
+      { id: '4.3', text: 'A equipe já participou de alguma capacitação em monitoramento, avaliação ou gestão baseada em evidências?',
+        orientacao: 'A capacidade técnica da equipe determina em grande medida a qualidade das ferramentas de M&A que serão construídas e usadas. A capacitação não é um pré-requisito absoluto, mas orienta o tipo de suporte e assessoria que a equipe precisará ao longo do processo.' },
+      { id: '4.4', text: 'A equipe se sente preparada para construir e usar ferramentas de monitoramento e avaliação?',
+        orientacao: 'A autopercepção da equipe sobre sua capacidade é um indicador importante das necessidades de suporte. O processo de construção das ferramentas de M&A pode ser ele mesmo uma oportunidade de aprendizado, e identificar essa lacuna é o primeiro passo para endereçá-la.' },
+      { id: '4.5', text: 'A liderança demonstra interesse em usar os resultados do monitoramento para tomar decisões?',
+        orientacao: 'O engajamento da liderança é um dos fatores mais determinantes para o sucesso do M&A. Quando os resultados do monitoramento não chegam às decisões, as ferramentas perdem seu propósito e a equipe perde o incentivo para mantê-las.' },
+    ]
+  },
+];
+
+const answers = {};
+const totalQ = blocos.reduce((s, b) => s + b.questions.length, 0);
+
+function renderQuestions() {
+  const area = document.getElementById('questions-area');
+  area.innerHTML = '';
+  let qNum = 0;
+  blocos.forEach(bloco => {
+    const sec = document.createElement('div');
+    sec.className = 'bloco';
+    sec.innerHTML = `<div class="bloco-header"><div class="bloco-num">${bloco.num}</div><div><div class="bloco-title">${bloco.title}</div><div class="bloco-subtitle">${bloco.subtitle}</div></div></div>`;
+    bloco.questions.forEach(q => {
+      qNum++;
+      const a = answers[q.id] || '';
+      const div = document.createElement('div');
+      div.className = 'question' + (a ? ' answered' : '');
+      div.id = 'q-' + q.id;
+      div.innerHTML = `
+        <div class="q-top">
+          <span class="q-id">${q.id}</span>
+          <span class="q-text"><strong style="color:var(--text-l);font-weight:500;margin-right:4px;">${qNum}.</strong>${q.text}</span>
+        </div>
+        <div class="q-options">
+          <button class="opt${a === 'disp' ? ' sel-disp' : ''}" onclick="answer('${q.id}','disp',this)">Sim</button>
+          <button class="opt${a === 'cons' ? ' sel-cons' : ''}" onclick="answer('${q.id}','cons',this)">Em parte</button>
+          <button class="opt${a === 'aus' ? ' sel-aus' : ''}" onclick="answer('${q.id}','aus',this)">Não</button>
+        </div>`;
+      sec.appendChild(div);
+    });
+    area.appendChild(sec);
+  });
+}
+
+function answer(qid, val, btn) {
+  answers[qid] = val;
+  const qEl = document.getElementById('q-' + qid);
+  if (qEl) { qEl.classList.add('answered'); qEl.querySelectorAll('.opt').forEach(b => b.className = 'opt'); }
+  btn.classList.add('sel-' + val);
+  updateProgress();
+  updateResults();
+}
+
+function updateProgress() {
+  const n = Object.keys(answers).length;
+  document.getElementById('progress-fill').style.width = Math.round(n / totalQ * 100) + '%';
+  const c = document.getElementById('answered-count');
+  if (c) c.textContent = n + ' de ' + totalQ + ' perguntas respondidas';
+}
+
+function updateResults() {
+  updateSummary();
+  updateGapSection();
+  updatePrintId();
+}
+
+function updateSummary() {
+  const grid = document.getElementById('summary-grid');
+  if (!grid) return;
+  grid.innerHTML = '';
+  blocos.forEach(bloco => {
+    const qs = bloco.questions;
+    const total = qs.length;
+    let disp = 0, cons = 0, aus = 0, pend = 0;
+    qs.forEach(q => {
+      const a = answers[q.id];
+      if (a === 'disp') disp++;
+      else if (a === 'cons') cons++;
+      else if (a === 'aus') aus++;
+      else pend++;
+    });
+    const card = document.createElement('div');
+    card.className = 'bloco-summary-card';
+    card.innerHTML = `
+      <div class="bsc-title">${bloco.title}</div>
+      <div class="bsc-bars">
+        <div class="bsc-bar-row">
+          <div class="bsc-bar-label">Sim</div>
+          <div class="bsc-bar-bg"><div class="bsc-bar-fill fill-disp" style="width:${Math.round(disp/total*100)}%"></div></div>
+          <div class="bsc-bar-count">${disp}</div>
+        </div>
+        <div class="bsc-bar-row">
+          <div class="bsc-bar-label">Em parte</div>
+          <div class="bsc-bar-bg"><div class="bsc-bar-fill fill-cons" style="width:${Math.round(cons/total*100)}%"></div></div>
+          <div class="bsc-bar-count">${cons}</div>
+        </div>
+        <div class="bsc-bar-row">
+          <div class="bsc-bar-label">Não</div>
+          <div class="bsc-bar-bg"><div class="bsc-bar-fill fill-aus" style="width:${Math.round(aus/total*100)}%"></div></div>
+          <div class="bsc-bar-count">${aus}</div>
+        </div>
+        ${pend > 0 ? `<div class="bsc-bar-row"><div class="bsc-bar-label" style="color:var(--text-l)">Não respondido</div><div class="bsc-bar-bg"><div class="bsc-bar-fill" style="width:${Math.round(pend/total*100)}%;background:var(--border-s)"></div></div><div class="bsc-bar-count" style="color:var(--text-l)">${pend}</div></div>` : ''}
+      </div>`;
+    grid.appendChild(card);
+  });
+}
+
+function updateGapSection() {
+  const sec = document.getElementById('gap-section');
+  if (!sec) return;
+  sec.innerHTML = '';
+  blocos.forEach(bloco => {
+    const div = document.createElement('div');
+    div.className = 'gap-bloco';
+    div.innerHTML = `<div class="gap-bloco-title">${bloco.num}. ${bloco.title}</div>`;
+    bloco.questions.forEach(q => {
+      const a = answers[q.id];
+      if (!a) return;
+      const item = document.createElement('div');
+      item.className = `gap-item ${a}`;
+      const statusLabel = a === 'disp' ? 'Sim' : a === 'cons' ? 'Em parte' : 'Não';
+      const statusClass = `status-${a}`;
+      const orientacaoHtml = (a === 'cons' || a === 'aus')
+        ? `<div class="gap-orientacao">${q.orientacao}</div>` : '';
+      item.innerHTML = `
+        <div class="gap-item-top">
+          <span class="gap-status ${statusClass}">${statusLabel}</span>
+          <span class="gap-q-text">${q.text}</span>
+        </div>
+        ${orientacaoHtml}`;
+      div.appendChild(item);
+    });
+    if (div.querySelectorAll('.gap-item').length > 0) sec.appendChild(div);
+  });
+}
+
+function updatePrintId() {
+  const el = document.getElementById('print-id');
+  if (!el) return;
+  const pol = document.getElementById('f-politica').value || '—';
+  const sec = document.getElementById('f-secretaria').value || '—';
+  const dat = document.getElementById('f-data').value || '—';
+  el.innerHTML = `<strong>Política:</strong> ${pol} &nbsp;|&nbsp; <strong>Setor:</strong> ${sec} &nbsp;|&nbsp; <strong>Data:</strong> ${dat}`;
+}
+
+function gerarPDF() {
+  updatePrintId();
+  document.getElementById('pdf-instruction').style.display = 'block';
+  document.getElementById('pdf-instruction-top').style.display = 'block';
+  setTimeout(() => window.print(), 300);
+}
+
+function switchTab(tab, btn) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  document.getElementById('panel-' + tab).classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  if (tab === 'resultado') { updateResults(); }
+}
+
+function resetAll() {
+  Object.keys(answers).forEach(k => delete answers[k]);
+  ['f-politica','f-secretaria','f-data'].forEach(id => {
+    const el = document.getElementById(id); if (el) el.value = '';
+  });
+  renderQuestions();
+  updateProgress();
+  updateResults();
+  switchTab('checklist', document.querySelectorAll('.tab-btn')[0]);
+}
+
+renderQuestions();
+updateProgress();
+updateResults();
+</script>
+</body>
+</html>
